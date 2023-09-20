@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Address Validation</title>
+    
+    <!-- Include Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        .result {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Address Validation</h1>
+        <div class="form-group">
+            <label for="address">Enter Home Address:</label>
+            <input type="text" class="form-control" id="address" placeholder="Enter Home Address">
+        </div>
+        <div class="form-group">
+            <label for="pincode">Enter Pincode:</label>
+            <input type="text" class="form-control" id="pincode" placeholder="Enter PIN code">
+        </div>
+        <div class="form-group">
+            <label for="district">Enter District:</label>
+            <input type="text" class="form-control" id="district1" placeholder="Enter District">
+        </div>
+        <div class="form-group">
+            <label for="state">Enter State:</label>
+            <input type="text" class="form-control" id="state1" placeholder="Enter State">
+        </div>
+        <div class="form-group">
+            <label for="country">Enter Country</label>
+            <input type="text" class="form-control" id="country" placeholder="Enter Country">
+        </div>
+        <button class="btn btn-primary" id="searchBtn">Verify</button>
+        
+        <div class="result mt-3">
+            <h3>Result obtained from Post Code API are as below:</h3>
+            <p><strong>State:</strong> <span id="state"></span></p>
+            <p><strong>District:</strong> <span id="district"></span></p>
+            <p><strong>Post Office Branch:</strong> <span id="postOffice"></span></p>
+           <h1><p id="validationResult"></p></h1> 
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Function to fetch data from the API and display the result
+        function fetchData() {
+            const pincode = document.getElementById("pincode").value;
+            const resultDiv = document.querySelector(".result");
+            const stateSpan = document.getElementById("state");
+            const districtSpan = document.getElementById("district");
+            const postOfficeSpan = document.getElementById("postOffice");
+            const stateEntered = document.getElementById("state1").value;
+            const districtEntered = document.getElementById("district1").value;
+            const validationResult = document.getElementById("validationResult");
+
+            // Create the URL for the pincode API
+            const pincodeUrl = `https://api.postalpincode.in/pincode/${pincode}`;
+
+            // Fetch data from the API
+            fetch(pincodeUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data[0].Status === "Success") {
+                        const state = data[0].PostOffice[0].State;
+                        const district = data[0].PostOffice[0].District;
+                        const postOffice = data[0].PostOffice[0].Name;
+                        stateSpan.textContent = state;
+                        districtSpan.textContent = district;
+                        postOfficeSpan.textContent = postOffice;
+                        resultDiv.style.display = "block";
+                        
+                        if (stateEntered === state && districtEntered === district) {
+                            validationResult.textContent = "Address is correct!";
+                        } else {
+                            validationResult.textContent = "Address Entered is not matching with the PIN code.Check your PIN code, District or State.";
+                        }
+                    } else {
+                        alert("Invalid PIN code. Please try again.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching data: ", error);
+                });
+        }
+
+        // Attach click event to the search button
+        document.getElementById("searchBtn").addEventListener("click", fetchData);
+    </script>
+</body>
+</html>
