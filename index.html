@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Address Validation</title>
     
-    <!-- Include Bootstrap CSS -->
+    <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Custom CSS -->
@@ -49,7 +49,7 @@
         </div>
     </div>
 
-    <!-- Include Bootstrap JS and jQuery -->
+    <!-- Bootstrap JS and jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -66,10 +66,10 @@
             const districtEntered = document.getElementById("district1").value;
             const validationResult = document.getElementById("validationResult");
 
-            // Create the URL for the pincode API
+            // Creating the URL for the pincode API
             const pincodeUrl = `https://api.postalpincode.in/pincode/${pincode}`;
 
-            // Fetch data from the API
+            // Fetching data from the API
             fetch(pincodeUrl)
                 .then(response => response.json())
                 .then(data => {
@@ -96,7 +96,7 @@
                 });
         }
 
-        // Attach click event to the search button
+        // Attaching click event to the search button
         document.getElementById("searchBtn").addEventListener("click", fetchData);
     </script>
 </body>
